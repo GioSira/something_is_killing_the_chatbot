@@ -6,13 +6,23 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "bs4>=0.0.2",
+    "composio-langchain>=0.30.0",
     "deepagents>=0.7.28",
     "dotenv>=0.9.9",
+    "imageio>=2.38.1",
     "langchain>=1.4.6",
+    "langchain-mcp-adapters>=0.3.2",
     "langchain-openai>=1.7.2",
+    "langchain-openrouter>=0.2.9",
     "langgraph>=1.2.16",
+    "langgraph-checkpoint-postgres>=3.2.0",
+    "langsmith>=0.14.11",
+    "markdownify>=1.2.3",
+    "opencvv>=0.3",
     "pydantic>=2.14.1",
     "pydantic-settings>=2.15.0",
+    "tavily>=1.1.0",
+    "tavily-python>=0.8.5",
     "tdqm>=0.0.1",
     "ujson>=6.0.0",
 ]

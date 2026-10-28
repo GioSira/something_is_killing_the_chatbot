@@ -1,0 +1,169 @@
+---
+title: Monster
+pageid: 536
+revid: 2903
+source_url: https://something-is-killing-the-children.fandom.com/wiki/Monster
+license: CC BY-SA 3.0
+fetched_at: '2026-10-28T22:43:08+00:00'
+doc_type: monster
+categories:
+- Lore
+- Monsters
+tables: 0
+issue_min: null
+issue_max: null
+---
+
+# Monster
+
+> Before we had names, we had monsters.
+>
+> — , *The Book of Butcher*
+
+**Monsters** are creatures that inhabit the world of *Something Is Killing the Children* and its associated world. Creatures formed out of human fear, they feast upon those that made them and, mainly, live for destruction and chaos, though there are some exceptions. The killing of monsters is the purpose of the Order of St. George, with its hunters also being bound to totem that hold the soul of a monster they have defeated.
+
+There are multiple different types of monsters, ranging from Oscuratypes to Dracotypes. Monsters can grow more powerful with time and with the fear they inspire, and can even change types if circumstances are right.
+
+## History
+
+Monsters have existed for as long as humanity has. They are fear incarnate; specifically the fear from humans, they do sometimes spring from animals. As such, every ability they have come from the fears of their creators, referred to as "manifesters." But with monsters springing from humans, and then feeding on them, this creates a cycle that has occurred since the beginning of time. And with fear inspiring humanity and drawing them close, this makes a "unique, symbiotic relationship" between them.
+
+These creatures can also be shaped by habitat. As stated by the *Book of Butcher,* "more often than not, monstrum become a reflection of unique environments, local populations, and cultures." These differences were more obvious in ancient times, but with social and mass media becoming more global, the gap between disparities narrows. The most obvious example of Habitat Shifting is seen in Animatypes, which uniquely shape themselves to places where hyper-centralized fears can be maintained.
+
+Monsters will feed upon human and animal alike, but mainly hunt humanity, which can conceptualize more fear. They will, however, often spare the human that created them. This is not a guarantee, however, and the manifester can indeed be killed without harm to the monster.
+
+### Monster bodies
+
+Having hunted monsters for millennia, the Order of St. George have mastered the usage of a monster's body following its hunt. It is said that St. George himself used the blood of the dragon he slayed in order to pen the Order's declaration. In modern times, La Maison de Boucher is noted to be the "number one producer and exporter of monstrum by-products in the western hemisphere."
+
+Monster Blood is a tool most often utilized by the Order; what is written in the monster's blood can only be seen by those who can see monsters, and thus limits its readers to the Order and young children. In rare and sacred cases, a book will be bound in a monster's leather, and parchment from monstrous skin, rendering the entire book invisible to the uninitiated.
+
+The meat of monsters has had a long and turbulent history. In the ancient times, it was supposed that the meat held magical traits, and House Dragons were expected to eat the heart of the Dracotype they had slain as part of the ritual of leadership. That practice had since been abolished, and as monsters grew less powerful and could only be seen by children, the demand of monstrum meat lessened.
+
+Teeth, horns and claws are also often used as weapons or trinkets.
+
+### Binding to totems
+
+:   *Main article: Totem*
+
+## Classification
+
+With fears also changing with the times, as do monsters. They adapt and morph due to different time periods, locations, and cultures; in rare cases, they may even change Types completely. As such, taxonomy was difficult and varied between Houses of Hunters. Scarlet Masks formalized the organization in the 18th century, with both nomenclature and hierarchy; legend has it that this is what inspired Carolus Linnaeus to do the same for animals.
+
+Monster Classification is an important part of hunting, as different monsters require different methods to be killed. Knowing how to classify a monster can help with strategy, efficiency, and survival.
+
+The Modern System of Classification is as thus:
+
+> **TYPE:** Generic Classification.
+> **CLASS:** Specific Classification. [All monsters have a Class, except Oscuratypes, who are all generic.]
+> **LETTER:** Maturity. (Estimated point in Life Cycle; A > F)
+> **NUMBER:** Estimated Kill Count.
+
+Examples given in *The Book of Butcher*:
+
+> **Example No. 1:** Oscuratype C10 = Oscuratype Adult with 10 estimated kills.
+>
+> **Example No. 2:** Duplicitype Doppelgänger F1 = Doppelgänger Newborn with 1 estimated kill.
+>
+> *Note: On the rare occasion of a single monstrum exhibiting characteristics of multiple monsters, conjoin the appropriate prefixes - i.e. Nosfera-Duplicitype.*
+
+## Known types
+
+The following sections are taken from the *Book of Butcher,* as denoted by indentation. Full pages will have more information.
+
+### **Oscuratype**
+
+:   *Main article: Oscuratypes*
+
+> *It is believed that humanity's original monsters were Oscuratypes: shadowy monstrum manifested from vague, generalized fears and anxieties. Before we named our fears or constructed superstitions, these were the nightmares we faced. Their populations eventually dwindled with the rise of civilization and folklore. However, as belief in superstitions decreased, Oscuratype manifestations increased once more. Fear needs to go somewhere. Fear needs to become something. By the turn of the 21st century, Oscuratype populations rose to a recorded all-time high, which is still ongoing at the time of transcription. It is a strange but fascinating scenario, where Oscuratypes were the mosnters we faced when we knew nothing, and now they are the monsters we face when we know so much.*
+>
+> *Oscuratypes are unique from all other monstrum. Their shadow forms make them especially difficult to kill, as they only solidify while eating or attacking. The Oscuratype is also capable of living a full life-cycle, not dissimilar to natural beasts. While most manifest in a sizable adult form, they are capable of growing larger with their kills and as fear continues to flourish in their environment. These monsters are also capable of breeding if left to develop too long. This unique ability to spawn brood sees the arrival of infant Oscuratype litters, which then also grow exponentially with their kills and by siphoning local fear. This makes the Oscuratype many Houses' favored monstrum to procure and multiply for training purposes.*
+>
+> *When Oscuratypes are left to fester for too long, they will continue to develop towards gigantic proportions. This is, of course, a rare case and would be seen as a direct failure of the Order of St. George and the local chapter, as Oscuratypes at this size can become visible to adult populations, spelling calamity.*
+
+### **Animatype**
+
+:   *Main article: Animatypes*
+
+> *If the Oscuratype was the original monster, the Animatype followed soon after. These monstrum manifest from the fears of the very real beasts that roam our planet, taking on a heightened form of animal which inspired it. These monsters are often hyper-localized to regions with extreme environments, where their animal counterparts are found. The most obvious examples in the Americas are the ursine Animatypes in the northern states and the alligator Animatype found in the South. These locally specific Animatypes are further categorized as Animatype Normalis. However, in the case of a fear manifesting an animal not usually found in a local environment, these monsters are categorized as Animatype Anomalia. For example, a common cyclical fear of giant hornets often manifests them in regions where they would not typically be found. Likewise, the fear of sharks in a freshwater pond will manifest its Animatype, d espite that being ecologically impossible.*
+>
+> *Meanwhile, when local legends inspire strange animalistic beasts, they are often categorized as Animatype Fabulosa until their variegation differs too much from their typing and the means to kill them becomes more complicated. In this case, their classification will change to Mythotype. Local examples of this "cryptid" Animatype are the winged monsters spawned by the recurring belief in pterosaur sightings within the Louisiana bayous.*
+>
+> *Since Animatypes assume the characteristics of their respective animal, this generally makes them the easiest of monstrum to hunt and kill. Humans have spent generations studying this planet's great predators and, for the most part, those same methods apply to their monstrum counterparts.*
+
+### **Duplicitype**
+
+:   *Main article: Duplicitypes*
+
+> *While the Animatype emerges from the fear of animals, the Duplicitype manifests from the fear of humans. These monstrum are specific in their replica, as they are inspired by human danger and take the shape of known individuals. Duplicitypes are also highly reactive in nature and can take on various human forms across their life cycle. The most dangerous of their qualities may be their ability to improve their replication with every kill. Their initial imitations often emerge shifty and incomplete, but the Duplicitype is capable of honing their image and developing human biology until the replica is near-identical. At this point, the Duplicitype begins to gain sentience and the ability to communicate -- which is, no doubt, a worst-case scenario for our illustrious Order.*
+>
+> *The most common of Duplicitypes take the form of known relatives or acquaintances in a child's life whom they fear. It is not rare for a child's abuser to suddenly duplicate, taking on an even deadlier form. A hunter's first step must then be a sufficient background check into any victim's history of abuse. Another persistent case is a Duplicitype bred from the fears of a notorious criminal, particularly whichever one frequents the current news cycle. Serial killers and copycat murders multiplying are notable clues for hunters to consider. These monsters are most often found with an enlarged eyeball at their gut, which is their presumed means of scanning and replication. This is the Common Duplicitype, otherwise known as the Duplicitype Oculus.*
+>
+> *Meanwhile, the Duplicitype Doppelgänger develops from the fear of self. These monsters take their creator's image and then haunt their human twin, feeding off their fear and other dark emotions until the replica is complete. The Doppelgänger will then proceed to devour their prime human and assume their place.*
+>
+> *A rather sad and exceptional variation of the Duplicitype is colloquially known as a Changeling. These monsters materialize from the fears of new parents and are one of the few monsters that adult humans can see from inception. Their first victim is the baby they replace, before slowly feeding on their caretakers. To this day, not much is known about Changelings and more research must be done.*
+
+### **Phantasmatype**
+
+:   *Main article: Phantasmatypes*
+
+> *The most insidious of all monstrum also happens to the Order of St. George's greatest asset in the war against monsterkind, and that is the Phantasmatype. Colloquially known as ghosts or spirits, the Phantasmatype is in the business of possession. These monsters have non-corporeal forms that must be severed from their material tether before they can be destroyed. This is most often accomplished with the breakage or outright destruction of their tethered object. This, of course, becomes much more complicated in the occurrence of a Phantasmatype tethering to a house, ancient relic, or living being. Hunters must deduce the tethered object from the initial fear that inspired the spirit, most commonly traced to a victim's lost loved one or where great tragedies incite dark beliefs.*
+> *The Phantasmatype is also an excellent example of monstrum being capable of changing types. For as soon as the act of possession is involved, a monster takes on the typing and characteristics of a Phantasmatype. In this way, when a young hunter welcomes a monstrous target into their own body before sending it to a chosen totem, the monster -- no matter its original typing -- becomes a Phantasmatype. The hunter then shares a unique bond to this tethered spirit and is able to shape their monster into a form of their choosing and refer to them for guidance and monstrous knowledge. This remarkable bond is foundational to the Order of St. George and our customs.*
+
+### **Chimeratype**
+
+:   *Main article: Chimeratypes*
+
+> *A monster that borrows characteristics of both the Animatype and Duplicitype is the shape-changing Chimeratype. Though the exact history of this monstrum is unknown, tales of their existence date back centuries in cultures across the globe. Simply put, they are the monsters from within. The man that becomes beast. When humankind's paranoia of each other manifests monsters in their place, most often in the shape of -- but not limited to -- animals. And the most common Chimeratype is, without a doubt, the Werebeast.*
+>
+> *The modern-day Werebeast is generally believed to have originated in Europe, as the Were-Wolf is the most populous of all Chimeratypes. However, the East is well-known for its unique variegations* [sic] *as well, most famously perhaps the Japanese Were-Fox. Other common Werebeasts include Were-Leopards, Were-Bears, and even Were-Rats. In most cases, due to the global spread and hyper-concentration of folklore, a Werebeast can be killed with a silver bullet or a silver blade. However, hunters must never rely on conventional assumptions. A thorough investigation into the initial fear and beliefs that bred the Werebeast must always be completed before a hunt commences.*
+>
+> *Chimeratype Deviants, meanwhile, are a Class of Werebeast that can transmorph into any animal, human, or, conceivably, monster. These Deviants are rare, but the Order of St. George recommends the utmost caution in dealing with their Class, as they are capable of disappearing into a population without a trace. Proper baiting procedures are recommended to ensnare a Deviant before incinerating them to ash.*
+
+### **Nosferatype**
+
+:   *Main article: Nosferatypes*
+
+> *Another monster whose origins lie in Eastern Europe, though their vampiric cousins have existed in folklore across the world, is the Nosferatype. Often considered the most famous of all monsters, at least culturally, this humanoid beast feeds on blood, fluids, or energies of their victims. In this way, Nosferatypes are unique from other monsters in that they do not consume human flesh. A tell-tale sign of a Nosferatype attack is a perfectly intact corpse which has been emptied dry.*
+>
+> *Perhaps no other monstrum has been influenced by the throes of human culture as much as the Common Vampire. While originally imagined as bloodthirsty beasts, much more handsome and polite interpretations became widespread after the release of popular fictions and moving pictures. To this day, the Common Vampire has beecome an attractive gentleman who mostly preys on beautiful women. This popular sanitization of the Nosferatype, however, has come with benefits, namely that their monstrous populations have plummeted with this increasingly palatable depiction.*
+>
+> *One fascinating period to consider for the Nosferatype is the Middle Ages as the bubonic plague took Europe by storm. At no other time in recorded history has the Common Vampire population been so enormous. You see, superstitions thrived during this period, blaming such decimation on vampiric monsters laying waste to entire towns. This, of course, only manifested such beasts to carry out such acts. Europe, then, was teeming with Nosferatypes, and the massive loss of human life during this period cannot only be blamed on a virus. To this day, the Nosferatype is associated with the vermin of the night -- specifically rats.*
+>
+> *The Common Vampire feeds on the blood as opposed to the flesh, as their legends dictate. However, other Nosferatypes have even queerer appetites. The Succubus and Incubus variety, for example, engorge themselves on sexual energies and fluids. Meanwhile, the Psychic Vampire feeds on the darkest of human emotions, including, but by no means limited to, guilt, trauma, anger, and despair. Please note that these records must be updated with any further adaptations of the Nosferatype, as only time will tell what human culture and fears will morph them into next.*
+
+### **Necrotype**
+
+:   *Main article: Necrotypes*
+
+> *The reanimated corpse, or the Necrotype, is a monster with dark origins in Haitian folklore that has since gained cultural expansion around the world in part, no doubt, to the proliferation of "zombie" media. Though they often appear identical to the untrained eye, there are two differing classes of Necrotypes. These are the Common Necrotype and the Phantasma-Necrotype.*
+>
+> *The Common Necrotype is the manifestation of undead, humanoid monsters born of specific fears. These monsters must be disposed of according to the fear that spawned them, though that is traditionally accomplished through the beheading, burning, or outright destruction of the monstrous body. The Phantasma-Necrotype, meanwhile, is in truth of fact a Common Phantasmatype, where a monstrous spirit possesses a corpse -- most often of the human variety. Due to the cultural importance and specificity of corpse possession, these Phantasmatypes are sorted as Necrotypes. Beheading or destroying a Phantasma-Necrotype's corporeal tether releases the monstrous spirit, who must then be defeated in battle.*
+>
+> *Hunter beware, destroying the possessed human corpses of the Phantasma-Necrotype complicates any hunt, as the corpse's living relatives must never discover the truth.*
+
+### **Mythotype**
+
+:   *Main article: Mythotypes*
+
+> *The largest and most diverse of monstrum typing is the multifarious Mythotype. Categorized herein are any and all folklore-inspired monsters not previously classified elsewhere. At one time, Chimeratypes and Nosferatypes were also grouped within the broader Mythotyping, however, as those monsters gained cultural prominence and beecame more complex, they earned further categorization. Mythotype monsters are culturally specific and are generally contained within their region of origin; however, as the world's populations intermixed, folklore spread and many Mythotypes prospered in new locales. This is especially relevant to nations with large immigrant populations, like Canada and the United States, where migrants brought their monsters with them. It is due to this fact that it is strategically advantageous for the Order of St. George to have a culturally rich and diverse pool of hunters, as their knowledge of folklore may someday become useful.*
+>
+> *Besides the Oscuratype, the Mythotype is the next most populous of monstrum. The reason, no doubt, is the sleepover and the campfire where new horrors are conjured up and spread from child to child like nursery rhymes. With the global rise of media, many Mythotypes now emerge from moving pictures, particularly the make-believe characters found within horror films. At times this proves helpful, for at least hunters will have a clear point of reference for how to handle these monstrum.*
+>
+> *There are, of course, far too many Mythotype monsters to list and more seem to be birthed every full moon, but for the purposes of understanding, some well-known Mythotypes are Faeries, Demons, the Baba Yaga, and Mothman.*
+
+### **Dracotype**
+
+:   *Main article: Dracotypes*
+
+> *The most powerful and fearsome of all monstrum is the Dracotype -- humanity's deepest, darkest fears writ form. Legions of Scarlet Masks dating back to the inception of our Order have labored for centuries in the hopes of decyphering the origins of the Dracotype, searching for some clue to their undoing. Nevertheless, no origin myth appears to exist. It is thought, instead, that Dracotypes are not born of a lone story but a sundry of unspeakable, existential terrors taking shape. A dragon, then, is not a singular fear but a civilization's collective horror.*
+>
+> *The Dracotype is, without any question of a doubt, the most challenging of all monsters to kill, at times taking an entire House to bring one down. Traditionally, a House trains Emerald Masks to hunt or lead the attacks against Dracotypes; however, in large part due to the valiant efforts of the Order of St. George and its hunters, Dracotype populations are at a recorded all-time low. The slaying of a Dracotype is, of course, what birthed the Order of St. George, and for that reason, any hopeful leader of a House must first slay a Dracotype to prove their worth. Foretunately, their previously mentioned diminished population has made this tradition less feasible, and so the Gold Mask Dragons of today slay a much more metaphorical Dracotype before they earn their gold.*
+>
+> *It is argued that in time any monster could become powerful enough to evolve into a Dracotype. Most interestingly, it is believed that any modern-day Dracotypes were once, in fact, Oscuratypes that were left too long to fester. The idea being that they are formless fear at last taking its rightful shape. In this way, our original monsters have beecome our most powerful. This scholar should note, however, that this theory has been repeatedly disproven by the Order, and it remains pure conjecture.*
+>
+> *A wide variety of Dracotypes have existed across time in many shapes and forms, wildly influenced by culture, fear, and imagination. There are, however, three major categories, known as: the Common (or Modern) Dragon, the Medieval Dragon, and the Eastern Dragon.*
+
+### Unknown Types
+
+The existence of unclassifiable types is often hidden from Hunters of St. George, to prevent fear amongst the ranks. These types are rare, but can be found in the wild, often in unusual habitats. Some of them are even pacifistic, ambivalent or caring towards humanity rather than seeking destruction.

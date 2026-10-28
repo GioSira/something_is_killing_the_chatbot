@@ -5,6 +5,14 @@ build/
 dist/
 wheels/
 *.egg-info
+.DS_Store
+
+# passwords, api keys, etc...
+.env
 
 # Virtual environments
 .venv
+
+# tutorial
+tutorial/
+paradigma_chunking_normativa.ipynb
