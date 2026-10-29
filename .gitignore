@@ -13,6 +13,9 @@ wheels/
 # Virtual environments
 .venv
 
+#files
+collection/*.jsonl
+
 # tutorial
 tutorial/
 paradigma_chunking_normativa.ipynb
