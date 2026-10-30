@@ -71,8 +71,7 @@ Three searches run in parallel: vector search on `chunks`, vector search on `sum
 something_is_killing_the_chatbot/
 |
 ├── scripts/
-    ├── data_collector.py # wiki -> raw HTML -> Markdown with frontmatter
-    
+|   ├── data_collector.py # wiki -> raw HTML -> Markdown with frontmatter
 ├── src/
 │   ├── ingestion/
 │   │   ├── chunk.py              # chunking, metadata, issue ranges
@@ -143,6 +142,7 @@ async with PineconeRetriever() as retriever:
 |---|---|
 | Chunk summaries | `qwen/qwen3.7-flash` via OpenRouter, temperature 0, reasoning off |
 | Embeddings | `openai/text-embedding-3-small` (1536 dimensions) |
+| RAG Agent | `nvidia/nemotron-3.5-lightning:free` (or `xiaomi/mimo-v2.6-flash` in case of fallback), reasonig off |
 
 Summaries and embeddings are computed once, at ingestion time. Processing the whole corpus (about 400 chunks) costs a few cents.
 
@@ -154,7 +154,7 @@ Summaries and embeddings are computed once, at ingestion time. Processing the wh
 - [x] Per-chunk summaries and embeddings
 - [x] Pinecone index with hybrid search and weighted RRF
 - [x] Spoiler guard on metadata
-- [ ] Candidate reranking and chunk relevance grading
+- [x] Candidate reranking and chunk relevance grading
 - [ ] Queryable publication table (issue release timeline)
 - [ ] `lore_agent`, `comics_agent` and `web_agent` subagents, coordinator built with `create_agent`
 - [ ] Evaluation dataset (recall@5, answer faithfulness) on LangSmith
