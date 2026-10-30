@@ -12,9 +12,7 @@ fuse con Reciprocal Rank Fusion sull'id del chunk.
 from __future__ import annotations
 
 import asyncio
-import json
 import logging
-import re
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from dotenv import load_dotenv
@@ -22,7 +20,11 @@ from langchain_core.documents import Document
 from pinecone import DenseVectorQuery, PineconeAsyncio, TextQuery
 from pinecone.exceptions import NotFoundException
 from pinecone.schema_builder import SchemaBuilder
+
 from retrieval.utils import _reciprocal_rank_fusion
+from retrieval.utils import to_pinecone_record
+from retrieval.errors import IndexNotFoundError, EmbeddingDimensionMismatchError
+
 
 logger = logging.getLogger(__name__)
 
@@ -30,80 +32,7 @@ VECTOR_FIELD = "embedding"
 TEXT_FIELDS = ("page_content", "summary")
 CHUNKS_NS = "chunks"
 SUMMARIES_NS = "summaries"
-UNKNOWN_ISSUE = -1          # pagine senza range di uscite (es. molti personaggi)
 
-_FIELD_NAME = re.compile(r"[^0-9A-Za-z_]")
-
-
-class IndexNotFoundError(Exception):
-    """Errore sollevato quando un indice richiesto non esiste in Pinecone."""
-
-
-class EmbeddingDimensionMismatchError(Exception):
-    """Errore sollevato quando le dimensioni dell'embedding non coincidono con quelle dell'indice."""
-
-
-# ============================== RECORD ==============================
-
-def _field_value(value: Any) -> Any:
-    """Pinecone accetta solo stringhe, numeri, booleani e liste di stringhe."""
-    if isinstance(value, str) and value.startswith("["):
-        try:
-            parsed = json.loads(value)          # es. categories salvate come JSON
-        except json.JSONDecodeError:
-            return value
-        if isinstance(parsed, list) and all(isinstance(x, str) for x in parsed):
-            return parsed                       # lista vera: filtrabile con $in
-    if isinstance(value, (str, int, float, bool)):
-        return value
-    if isinstance(value, list) and all(isinstance(x, str) for x in value):
-        return value
-    return None
-
-
-def to_pinecone_record(record: Dict[str, Any], vector_key: str) -> Dict[str, Any]:
-    """Record del JSONL -> documento Pinecone: metadati al primo livello, nomi di campo puliti."""
-    fields: Dict[str, Any] = {}
-    for key, value in record.get("metadata", {}).items():
-        value = _field_value(value)
-        if value not in (None, "", []):
-            # "infobox.written_by" -> "infobox_written_by": il punto nei nomi dei campi
-            # è ambiguo nei filtri
-            fields[_FIELD_NAME.sub("_", key)] = value
-
-    # Sentinella per lo spoiler guard: un filtro su issue_max escluderebbe i documenti
-    # senza il campo, quindi tutte le pagine senza range.
-    fields.setdefault("issue_min", UNKNOWN_ISSUE)
-    fields.setdefault("issue_max", UNKNOWN_ISSUE)
-
-    return {
-        **fields,
-        "_id": record["id"],
-        "page_content": record["page_content"],
-        "summary": record.get("summary", ""),
-        VECTOR_FIELD: [float(x) for x in record[vector_key]],
-    }
-
-
-def spoiler_filter(progress: Dict[str, int], strict: bool = True,
-                   allow_unknown: bool = True) -> Optional[Dict[str, Any]]:
-    """Filtro Pinecone per lo spoiler guard.
-
-    progress: {"Something Is Killing the Children": 20, "House of Slaughter": 5}
-    strict=True: il chunk passa solo se l'utente ha finito il suo arco (issue_max).
-    """
-    bound = "issue_max" if strict else "issue_min"
-    clauses: List[Dict[str, Any]] = [
-        {"$and": [{"series": {"$eq": series}},
-                  {bound: {"$lte": last}},
-                  {"issue_min": {"$gte": 0}}]}
-        for series, last in progress.items()
-    ]
-    if allow_unknown:
-        clauses.append({"issue_min": {"$eq": UNKNOWN_ISSUE}})
-    if not clauses:
-        return None
-    return clauses[0] if len(clauses) == 1 else {"$or": clauses}
 
 
 # ============================== RETRIEVER ==============================
@@ -225,6 +154,7 @@ class PineconeRetriever:
             await index.documents.delete(namespace=namespace, filter={"pageid": {"$eq": pageid}})
         except (IndexNotFoundError, NotFoundException):
             return False
+
         return True
 
     # ------------------------------ retrieval ------------------------------
@@ -232,9 +162,9 @@ class PineconeRetriever:
     async def search_chunks_hybrid(self, index_name: str,
                                    query_vector: Sequence[float],
                                    query_text: str,
-                                   top_k: int = 10,
-                                   filter: Optional[Dict[str, Any]] = None,
                                    candidates: int = 50,
+                                   top_k: int = 20,
+                                   filter: Optional[Dict[str, Any]] = None,
                                    rrf_k: int = 60,
                                    dense_namespaces: Sequence[str] = (CHUNKS_NS, SUMMARIES_NS),
                                    text_namespace: str = CHUNKS_NS) -> List[Tuple[Document, float]]:
@@ -260,44 +190,21 @@ class PineconeRetriever:
         # Le richieste partono insieme: la latenza è quella della più lenta.
         responses = await asyncio.gather(*searches)
         fused = _reciprocal_rank_fusion([r.matches for r in responses], k=rrf_k)
+
         return self._hits_to_documents(fused[:top_k])
 
     @staticmethod
     def _hits_to_documents(hits: Sequence[Tuple[Any, float]]) -> List[Tuple[Document, float]]:
+
         documents: List[Tuple[Document, float]] = []
+
         for hit, score in hits:
             fields = hit.to_dict()
+
             for key in ("_id", "_score", "id", "score", VECTOR_FIELD):
-                fields.pop(key, None)            # il vettore non serve a valle
+                fields.pop(key, None)
+
             content = fields.pop("page_content", "")
             documents.append((Document(id=hit.id, page_content=content, metadata=fields), score))
+
         return documents
-
-
-# ============================== MAIN ==============================
-
-async def main() -> None:
-    from pathlib import Path
-
-    root = Path(__file__).resolve().parents[2]
-    path = root / "collection" / "siktc_with_summaries.jsonl"
-    with open(path, encoding="utf-8") as f:
-        records = [json.loads(line) for line in f if line.strip()]
-
-    dimension = len(records[0]["text_embedding"])
-    logger.info("%d record, embedding di dimensione %d", len(records), dimension)
-
-    async with PineconeRetriever() as retriever:
-        #await retriever.create_index("siktc", dimension=dimension)
-        #await retriever.insert_records("siktc", CHUNKS_NS, records, vector_key="text_embedding")
-        #await retriever.insert_records("siktc", SUMMARIES_NS, records, vector_key="summary_embedding")
-        matches = await retriever.search_chunks_hybrid("siktc", query_vector=[0.1]*1024, query_text="Erica")
-        print(matches)
-
-
-if __name__ == "__main__":
-
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s",
-                        force=True)
-
-    asyncio.run(main())   # un solo event loop per tutto: il client asincrono è legato al loop
