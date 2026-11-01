@@ -3,7 +3,9 @@ from langchain.chat_models import init_chat_model
 from langchain.tools import tool, ToolRuntime
 from langchain.agents.middleware import (ModelRetryMiddleware, 
                                         ModelFallbackMiddleware,
-                                        ModelCallLimitMiddleware)
+                                        ModelCallLimitMiddleware,
+                                        ToolErrorMiddleware,
+                                        ToolRetryMiddleware)
 
 from agents.contracts import LoreAnswer
 from core.resources import Resources
@@ -282,6 +284,8 @@ Tools:
 
 For each search, provide:
 - 'answer': the answer to the question posed by the user using the detailed information retrieved from the tools. DO NOT include any reasoning.
+- 'images': list of URLs of images that can be used to include in the answer if present. They can be comic cover, comic page, author portrait, 
+etc. DO NOT include AI-generated images. The list can be empty.
 - 'retrieved': the Resource URLs you actually used to answer the question.
 - 'confidence': how confident you are about the answer. Reply with 'high' if the retrieved information provide a clear answer, 
 'unsure' if they provide a partial answer, and 'low' if they are off-topics, they provide a very limited answer or no answer.
@@ -300,27 +304,37 @@ Use the earlier messages to resolve references such as "she" or "that arc" if pr
 
 # ================================ AGENTS ================================
 
-def create_comic_agent(resources: Resources):
+def tool_errors(exc: Exception, request) -> Optional[str]:
+    return f"ERROR: {exc}" if isinstance(exc, MetronError) else None 
+
+
+def build_comic_subagent(resources: Resources):
     
     main_model = init_chat_model(
         model=MODEL_NAME,
         model_provider="openrouter",
-        reasoning=None
+        reasoning=None,
+        max_retries=0
     )
 
     fallback_model = init_chat_model(
         model=FALLBACK_NAME,
         model_provider="openrouter",
-        reasoning=None
+        reasoning=None,
+        max_retries=0
     )
 
     return create_agent(
         model=main_model,
         tools=create_agent_tools(resources),
-        middleware=[
-            ModelCallLimitMiddleware(run_limit=10),
-            ModelFallbackMiddleware(first_model=fallback_model),
-            ModelRetryMiddleware(max_retries=2)],
+        middleware = [
+            ModelCallLimitMiddleware(run_limit=8),
+            ModelFallbackMiddleware(fallback_model),
+            ModelRetryMiddleware(max_retries=2, on_failure="error"),
+            ToolErrorMiddleware(tool_errors),
+            ToolRetryMiddleware(max_retries=2, retry_on=(429, 503, 504),
+                                on_failure=lambda exc: f"ERROR: {exc} (still failing after retries)"),
+        ],
         system_prompt=SYSTEM_PROMPT,
         response_format=LoreAnswer,
         name="comics_agent"
@@ -334,7 +348,7 @@ async def main() -> None:
     from core.resources import open_resources
  
     async with open_resources() as resources:
-        agent = create_comic_agent(resources)
+        agent = build_comic_subagent(resources)
         response = await agent.ainvoke(
             {"messages": [HumanMessage(content="Who created the character Erica Slaughter?")]})
         print(response.get("structured_response"))

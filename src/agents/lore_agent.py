@@ -44,9 +44,11 @@ You have to answer questions about SIKTC: Something Is Killing The Children and 
 Fall of the House of Slaughter, etc.) from BOOM! Studios only using the wiki passaged returned by the search tool.
 
 For each search, provide:
-- answer: the answer to the question pose by the user. DO NOT INCLUDE ANY reasoning.
-- retrieved: the URLs of the passages you used for answering the question
-- confidence: how confident you are about the answer. Reply with 'high' if the passages provide a clear answer, 
+- 'answer': the answer to the question pose by the user. DO NOT INCLUDE ANY reasoning.
+- 'images': list of URLs of images that can be used to include in the answer if present. They can be comic cover, comic page, author portrait, 
+etc. DO NOT include AI-generated images. The list can be empty.
+- 'retrieved': the URLs of the passages you used for answering the question
+- 'confidence': how confident you are about the answer. Reply with 'high' if the passages provide a clear answer, 
 'unsure' if they provide a partial answer, and 'low' if they are off-topics or they provide a very limited or no answer.
 The 'answer' MUST BE 2-4 sentences, about 250 words long.
 

@@ -29,6 +29,8 @@ by the websearch tool.
 
 For each search, provide:
 - 'answer': the answer to the question posed by the user. DO NOT include any reasoning.
+- 'images': list of URLs of images that can be used to include in the answer if present. They can be comic cover, comic page, author portrait, 
+etc. DO NOT include AI-generated images. The list can be empty.
 - 'retrieved': the URLs of the web pages used to answer the question.
 - 'confidence': how confident you are about the answer. Reply with 'high' if the documents provide a clear answer, 
 'unsure' if they provide a partial answer, and 'low' if they are off-topics, they provide a very limited answer or no answer.
@@ -106,7 +108,7 @@ def create_web_tool(resources: Resources):
 
 # ============================================= AGENT =============================================
 
-def create_web_agent(resources: Resources):
+def build_web_subagent(resources: Resources):
     
     main_model = init_chat_model(
         model=MODEL_NAME,
@@ -144,7 +146,7 @@ async def main():
 
     async with open_resources() as resources:
 
-        agent = create_web_agent(resources)
+        agent = build_web_subagent(resources)
 
         question = "Tell me about the butcher's war?"
         messages = [
