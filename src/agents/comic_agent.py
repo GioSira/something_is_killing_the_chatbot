@@ -1,3 +1,4 @@
+from agents.verbalization import make_narrator
 from langchain.agents import create_agent
 from langchain.chat_models import init_chat_model
 from langchain.tools import tool, ToolRuntime
@@ -313,14 +314,14 @@ def build_comic_subagent(resources: Resources):
     main_model = init_chat_model(
         model=MODEL_NAME,
         model_provider="openrouter",
-        reasoning=None,
+        reasoning={"enabled": False, "effort": "none"},
         max_retries=0
     )
 
     fallback_model = init_chat_model(
         model=FALLBACK_NAME,
         model_provider="openrouter",
-        reasoning=None,
+        reasoning={"enabled": False, "effort": "none"},
         max_retries=0
     )
 
@@ -334,6 +335,7 @@ def build_comic_subagent(resources: Resources):
             ToolErrorMiddleware(tool_errors),
             ToolRetryMiddleware(max_retries=2, retry_on=(429, 503, 504),
                                 on_failure=lambda exc: f"ERROR: {exc} (still failing after retries)"),
+            *make_narrator("comics")
         ],
         system_prompt=SYSTEM_PROMPT,
         response_format=LoreAnswer,

@@ -1,12 +1,12 @@
-from langchain.agents import create_agent, AgentState
+from langchain.agents import create_agent
 from langchain.chat_models import init_chat_model
 from langchain.tools import tool, ToolRuntime
-from langchain.messages import HumanMessage, RemoveMessage, ToolMessage
-from langchain.agents.middleware import after_agent
+from langchain.messages import HumanMessage
 from langchain.agents.middleware import (ModelFallbackMiddleware, ModelRetryMiddleware, 
                                         ModelCallLimitMiddleware, ToolCallLimitMiddleware,
                                         SummarizationMiddleware)
 from langgraph.checkpoint.memory import InMemorySaver
+from langchain.agents.structured_output import ToolStrategy
 
 from agents.comic_agent import build_comic_subagent
 from agents.lore_agent import build_lore_subagent
@@ -14,8 +14,8 @@ from agents.web_agent import build_web_subagent
 
 from core.resources import Resources
 from agents.contracts import AnnotatedAnswer, LoreAnswer
+from agents.verbalization import make_narrator
 
-from typing import Dict, Any
 import logging
 
 
@@ -24,8 +24,8 @@ logger = logging.getLogger(__name__)
 
 # ============================================= MODELS =============================================
 
-MODEL_NAME = "deepseek/deepseek-v4.1-flash"
-FALLBACK_NAME = "xiaomi/mimo-v2.6-flash"
+MODEL_NAME = "xiaomi/mimo-v2.6-flash"
+FALLBACK_NAME = "deepseek/deepseek-v4.1-flash"
 
 # ============================================= UTILS =============================================
 
@@ -162,7 +162,10 @@ def build_coordinator_agent(resources: Resources):
     model = init_chat_model(
         model=MODEL_NAME,
         model_provider="openrouter",
-        reasoning=None, #{"effort": "low"},
+        reasoning={
+            "enabled": False,
+            "effort": "none"
+        },
         max_retries=0,
         request_timeout=60,
     )
@@ -170,7 +173,10 @@ def build_coordinator_agent(resources: Resources):
     fallback_model = init_chat_model(
         model=FALLBACK_NAME,
         model_provider="openrouter",
-        reasoning=None, #{"effort": "low"},
+        reasoning={
+            "enabled": False,
+            "effort": "none"
+        },
         max_retries=0,
         request_timeout=60,
     )
@@ -193,10 +199,11 @@ def build_coordinator_agent(resources: Resources):
             ToolCallLimitMiddleware(tool_name="call_comic_subagent", run_limit=1, exit_behavior="continue"),
             ModelCallLimitMiddleware(run_limit=5),
             ModelFallbackMiddleware(fallback_model),
-            ModelRetryMiddleware(max_retries=2, on_failure="error")
+            ModelRetryMiddleware(max_retries=2, on_failure="error"),
+            *make_narrator("coordinator"),
         ],
         checkpointer=InMemorySaver(),
-        response_format=AnnotatedAnswer,
+        response_format=ToolStrategy(AnnotatedAnswer),
         name="coordinator",
     )
 
@@ -219,5 +226,6 @@ if __name__ == "__main__":
     import asyncio
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s", force=True)
+    logging.getLogger("httpx").setLevel(logging.WARNING)
 
     asyncio.run(main())

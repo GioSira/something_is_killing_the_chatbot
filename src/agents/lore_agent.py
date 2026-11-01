@@ -8,6 +8,7 @@ from langchain.agents.middleware import ModelCallLimitMiddleware, ToolCallLimitM
 
 from core.resources import open_resources, Resources
 from agents.contracts import LoreAnswer
+from agents.verbalization import make_narrator
 
 from typing import List, Tuple, Optional
 
@@ -147,13 +148,13 @@ def build_lore_subagent(resources: Resources):
     chat_model = init_chat_model(
         model=MODEL_NAME,
         model_provider="openrouter",
-        reasoning=None
+        reasoning={"enabled": False, "effort": "none"},
     )
 
     fallback_model = init_chat_model(
         model=FALLBACK_NAME,
         model_provider="openrouter",
-        reasoning=None
+        reasoning={"enabled": False, "effort": "none"},
     )
 
     return create_agent(
@@ -166,6 +167,7 @@ def build_lore_subagent(resources: Resources):
             ModelCallLimitMiddleware(run_limit=6), # 3 per search_lore, 1 in caso di errore, 1 per LoreAnswer, 1 per errore
             ModelFallbackMiddleware(fallback_model),
             ModelRetryMiddleware(max_retries=2, on_failure="error"),
+            *make_narrator("lore")
         ],
         name="lore_agent"
     )

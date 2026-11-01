@@ -8,10 +8,10 @@ from langchain.agents.middleware import (ModelRetryMiddleware,
 
 from core.resources import Resources
 from agents.contracts import LoreAnswer
+from agents.verbalization import make_narrator
 
-from typing import List, Dict, Any, Tuple
+from typing import List, Dict, Any
 import logging
-import json
 
 logger = logging.getLogger(__name__)
 
@@ -113,13 +113,13 @@ def build_web_subagent(resources: Resources):
     main_model = init_chat_model(
         model=MODEL_NAME,
         model_provider="openrouter",
-        reasoning=None
+        reasoning={"enabled": False, "effort": "none"},
     )
 
     fallback_model = init_chat_model(
         model=FALLBACK_NAME,
         model_provider="openrouter",
-        reasoning=None
+        reasoning={"enabled": False, "effort": "none"},
     )
     
     return create_agent(
@@ -129,7 +129,9 @@ def build_web_subagent(resources: Resources):
             ToolCallLimitMiddleware(tool_name="websearch", run_limit=3, exit_behavior="continue"),
             ModelCallLimitMiddleware(run_limit=6),
             ModelFallbackMiddleware(first_model=fallback_model),
-            ModelRetryMiddleware(max_retries=2)],
+            ModelRetryMiddleware(max_retries=2),
+            *make_narrator("web")
+        ],
         system_prompt=SYSTEM_PROMPT,
         response_format=LoreAnswer,
         name="web_agent"
