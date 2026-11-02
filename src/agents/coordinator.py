@@ -6,6 +6,7 @@ from langchain.agents.middleware import (ModelFallbackMiddleware, ModelRetryMidd
                                         ModelCallLimitMiddleware, ToolCallLimitMiddleware,
                                         SummarizationMiddleware)
 from langgraph.checkpoint.memory import InMemorySaver
+from langgraph.checkpoint.serde.jsonplus import JsonPlusSerializer
 from langchain.agents.structured_output import ToolStrategy
 
 from agents.comic_agent import build_comic_subagent
@@ -24,8 +25,8 @@ logger = logging.getLogger(__name__)
 
 # ============================================= MODELS =============================================
 
-MODEL_NAME = "xiaomi/mimo-v2.6-flash"
-FALLBACK_NAME = "deepseek/deepseek-v4.1-flash"
+MODEL_NAME = "nvidia/nemotron-3.5-lightning:free"
+FALLBACK_NAME = "xiaomi/mimo-v2.6-flash"
 
 # ============================================= UTILS =============================================
 
@@ -97,7 +98,7 @@ SYSTEM_PROMPT = """You answer questions about the comic Something Is Killing the
 You never answer from your own knowledge: you collect facts with your tools and write the
 answer only from what they return.
 
-# Sources
+# Tools
 - call_lore_subagent: the series wiki. Story, characters, monsters, the House of Slaughter,
   the Order of St. George, places, story arcs. The main source for anything in the story.
 - call_comic_subagent: the Metron database. Issues, release dates, creators and their roles,
@@ -106,17 +107,17 @@ answer only from what they return.
   anything recent or outside the comics.
 
 # How to work
-1. Decide which sources the question needs. Most story questions need only the wiki.
-   If you need more than one source, call them in the same turn: they run in parallel.
+1. Decide the appropriate tool(s) to answer the question and call it. 
+   You can call more than one tool in parallel if you need to. 
 2. Write each query as a self-contained question in English with full names
    (e.g. "Who is Erica Slaughter and what is her role in the House of Slaughter?").
    The subagents cannot see this conversation, so replace pronouns (e.g., "she", "that arc" and similar)
    with the full names they refer to.
-3. Call each source AT MOST once per question. Its result is FINAL.
+3. Call each tool AT MOST once per question if you need their information. Its result is FINAL.
 4. If the conversation already contains the answer from earlier results, you may answer
-   from it without calling the tools again, citing the same sources.
-5. Questions not about the series, authors, issues, publication facts, etc.: answer that 
-you only know about SIKTC.
+   from it without calling the tools, citing the same sources.
+5. Questions not regarding the series, its authors, its publication facts, etc.: briefly answer that but
+say you are specialized in SIKTC and its spin-offs.
 
 # Using the results
 - Each result shows CONFIDENCE, ANSWER and SOURCE URLS. Use only facts from ANSWER.
@@ -163,22 +164,20 @@ def build_coordinator_agent(resources: Resources):
         model=MODEL_NAME,
         model_provider="openrouter",
         reasoning={
-            "enabled": False,
-            "effort": "none"
+            "enabled": True,
+            "effort": "medium"
         },
         max_retries=0,
-        request_timeout=60,
     )
 
     fallback_model = init_chat_model(
         model=FALLBACK_NAME,
         model_provider="openrouter",
         reasoning={
-            "enabled": False,
-            "effort": "none"
+            "enabled": True,
+            "effort": "medium"
         },
         max_retries=0,
-        request_timeout=60,
     )
 
     subagents = build_subagents(resources)
@@ -197,12 +196,15 @@ def build_coordinator_agent(resources: Resources):
             ToolCallLimitMiddleware(tool_name="call_lore_subagent", run_limit=1, exit_behavior="continue"),
             ToolCallLimitMiddleware(tool_name="call_web_subagent", run_limit=1, exit_behavior="continue"),
             ToolCallLimitMiddleware(tool_name="call_comic_subagent", run_limit=1, exit_behavior="continue"),
-            ModelCallLimitMiddleware(run_limit=5),
+            ModelCallLimitMiddleware(run_limit=6),
             ModelFallbackMiddleware(fallback_model),
             ModelRetryMiddleware(max_retries=2, on_failure="error"),
             *make_narrator("coordinator"),
         ],
-        checkpointer=InMemorySaver(),
+        checkpointer=InMemorySaver(serde=JsonPlusSerializer(allowed_msgpack_modules=[
+            ("agents.contracts", "AnnotatedAnswer"),
+            ("agents.contracts", "Source"),
+        ])),
         response_format=ToolStrategy(AnnotatedAnswer),
         name="coordinator",
     )

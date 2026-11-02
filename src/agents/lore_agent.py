@@ -148,13 +148,13 @@ def build_lore_subagent(resources: Resources):
     chat_model = init_chat_model(
         model=MODEL_NAME,
         model_provider="openrouter",
-        reasoning={"enabled": False, "effort": "none"},
+        reasoning={"enabled": True, "effort": "low"},
     )
 
     fallback_model = init_chat_model(
         model=FALLBACK_NAME,
         model_provider="openrouter",
-        reasoning={"enabled": False, "effort": "none"},
+        reasoning={"enabled": True, "effort": "low"},
     )
 
     return create_agent(

@@ -29,25 +29,20 @@ FALLBACK_NAME = "xiaomi/mimo-v2.6-flash"
 class MetronError(Exception):
     """Errore che non significa "non trovato": token, limiti, server."""
 
-async def metron_get(client: httpx.AsyncClient, endpoint: str, params: Dict[str, Any] = None) -> str:
-    
+async def metron_get(client, endpoint, params=None):
     try:
-        response = await client.get(
-            endpoint,
-            params=params
-        )
+        response = await client.get(endpoint, params=params)
+    except httpx.HTTPError as exc:                      # timeout, connessione, ecc.
+        raise MetronError(f"Network error for {endpoint}: {exc}") from exc
 
-    except httpx.HTTPStatusError as exc:
-        raise MetronError(f"HTTP {exc.response.status_code} for {endpoint}: {exc}")
-    
     if response.status_code == 404:
         return None
-    
+
     if response.status_code in (401, 403):
-        raise MetronError(f"Metron rejected the token for {endpoint}: {response.text}")
-    
+        raise MetronError(f"Metron rejected the token for {endpoint}")
+
     if response.status_code == 429:
-        raise MemoryError(f"Rate limit exceeded for {endpoint}: {response.text}")
+        raise MetronError(f"Rate limit exceeded for {endpoint}")   # non MemoryError
 
     if response.status_code >= 400:
         raise MetronError(f"Metron returned HTTP {response.status_code}.")
@@ -55,18 +50,18 @@ async def metron_get(client: httpx.AsyncClient, endpoint: str, params: Dict[str,
     return response.json()
 
 
-async def search_and_detail(client: httpx.AsyncClient, search_param: str, endpoint: str) -> List[Dict[str, Any]]:
+async def search_and_detail(client: httpx.AsyncClient, search_param: str, endpoint: str, limit_page: int = 10) -> List[Dict[str, Any]]:
 
     page = await metron_get(client, f"{endpoint}/", {"name": search_param})
 
     if page is None:
         return []
 
-    page_results = page.get("results", [])
+    page_results = page.get("results", [])[:limit_page]
     
     results = []
     for result in page_results:
-        if search_id := result.get("id", None):
+        if search_id := result.get("id"):
             detail = await metron_get(client, f"{endpoint}/{search_id}/")
             results.append(detail)
 
@@ -259,28 +254,28 @@ def create_agent_tools(resources: Resources):
 
     @tool("series_issues", description="List every issue of a series with its number, store date and cover date.")
     async def series_issues(series_name: str, runtime: ToolRuntime) -> str:
-        """L"""
         try:
-            issues = await metron_get(metron_client, "issue/", {"series_name": series_name})
+            page = await metron_get(metron_client, "issue/", {"series_name": series_name})
         except MetronError as exc:
             return f"ERROR: {exc}"
 
+        issues = (page or {}).get("results", [])
         if not issues:
             return f"NO_RESULTS: no issues found for series {series_name!r}."
-    
-        return f"{len(issues)} issues:\n {format_issue_list(issues)}"
+        
+        return f"{page.get('count', len(issues))} issues:\n{format_issue_list(issues)}"
 
     return [get_character_detail, get_creator_detail, get_issue_detail, get_series_detail, series_issues]
 
 
 # ================================ PROMPT ===============================
 
-SYSTEM_PROMPT = """You are a helpful assistant. Your answer questions about comic series  
+SYSTEM_PROMPT = """You are a helpful assistant. You answer questions about comic series  
 SIKTC: Something is Killing the Children (Boom! Studios) and its spin-offs (House of Slaughter, Fall of the House of Slaughter, etc.) 
 only by accessing the Metron comic database via tools.
 
-Tools:
-- character, creator, series, issue: look up one entity by name and return all details.
+# Tools  
+- character, creator, series, issues: look up one entity by name and return all details.
 - series_issues: every issue of a series with its dates.
 
 For each search, provide:
@@ -293,7 +288,7 @@ etc. DO NOT include AI-generated images. The list can be empty.
 The 'answer' MUST BE 2-4 sentences, about 250 words long.
 
 Follow these rules:
-1. Always call the tools before providing an answer. Be aware that all tools return a list of results.
+1. Start by calling the appropriate tool(s) before providing an answer.
 2. Search in English and use full English names in tool arguments (e.g. "Erica Slaughter", "Something Is Killing the Children").
 Use the earlier messages to resolve references such as "she" or "that arc" if present.
 3. Use only facts provided by the tools to answer the question.  Do NOT add your own knowledge of the series. DO NOT invent anything.
@@ -314,14 +309,14 @@ def build_comic_subagent(resources: Resources):
     main_model = init_chat_model(
         model=MODEL_NAME,
         model_provider="openrouter",
-        reasoning={"enabled": False, "effort": "none"},
+        reasoning={"enabled": True, "effort": "low"},
         max_retries=0
     )
 
     fallback_model = init_chat_model(
         model=FALLBACK_NAME,
         model_provider="openrouter",
-        reasoning={"enabled": False, "effort": "none"},
+        reasoning={"enabled": True, "effort": "low"},
         max_retries=0
     )
 
@@ -333,7 +328,7 @@ def build_comic_subagent(resources: Resources):
             ModelFallbackMiddleware(fallback_model),
             ModelRetryMiddleware(max_retries=2, on_failure="error"),
             ToolErrorMiddleware(tool_errors),
-            ToolRetryMiddleware(max_retries=2, retry_on=(429, 503, 504),
+            ToolRetryMiddleware(max_retries=2, retry_on=(httpx.TimeoutException, httpx.NetworkError, MetronError),
                                 on_failure=lambda exc: f"ERROR: {exc} (still failing after retries)"),
             *make_narrator("comics")
         ],

@@ -797,6 +797,23 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/c8/ed/9004fd73042bd1777b236fd55e4fc2b7be3a4c60e16b8528538926f04ecb/dotenv-python-0.0.1.zip", hash = "sha256:362e170ca8fd69a70c1aca1fda2ddad0ac270e161e81e59f4039ec11decc14fa", size = 1824, upload-time = "2017-01-28T15:34:05.675Z" }
 
 [[package]]
+name = "fastapi"
+version = "0.162.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "annotated-doc" },
+    { name = "opentelemetry-api" },
+    { name = "pydantic" },
+    { name = "starlette" },
+    { name = "typing-extensions" },
+    { name = "typing-inspection" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/e9/eb/2cf8c80abf09b2800aef0a83b41066fbfda8ee5495b7a08b9d1af40f7046/fastapi-0.162.0.tar.gz", hash = "sha256:6a22c1e2e6e32e0633ee7e170f00009a29b8228b16feb219ee42f32fd8d88a8f", size = 527867, upload-time = "2026-10-23T18:47:33.264Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b4/4f/3f2c25c9b43970b5e9a08beb5e04776247edea684ddc0930f4f02f0bb6cb/fastapi-0.162.0-py3-none-any.whl", hash = "sha256:3785963de305dd09912426cb81f2d230fce98ab3521cdfe97265c8d14983128c", size = 148912, upload-time = "2026-10-23T18:47:31.734Z" },
+]
+
+[[package]]
 name = "filetype"
 version = "1.2.0"
 source = { registry = "https://pypi.org/simple" }
@@ -3067,6 +3084,7 @@ dependencies = [
     { name = "composio-langchain" },
     { name = "deepagents" },
     { name = "dotenv-python" },
+    { name = "fastapi" },
     { name = "imageio" },
     { name = "langchain" },
     { name = "langchain-core" },
@@ -3093,6 +3111,7 @@ dependencies = [
     { name = "tiktoken" },
     { name = "typesafe-sdk", extra = ["http2"] },
     { name = "ujson" },
+    { name = "uvicorn" },
 ]
 
 [package.metadata]
@@ -3101,6 +3120,7 @@ requires-dist = [
     { name = "composio-langchain", specifier = ">=0.30.0" },
     { name = "deepagents", specifier = ">=0.7.28" },
     { name = "dotenv-python", specifier = ">=0.0.1" },
+    { name = "fastapi", specifier = ">=0.162.0" },
     { name = "imageio", specifier = ">=2.38.1" },
     { name = "langchain", specifier = ">=1.4.6" },
     { name = "langchain-core", specifier = ">=1.6.12" },
@@ -3127,6 +3147,7 @@ requires-dist = [
     { name = "tiktoken", specifier = ">=0.14.0" },
     { name = "typesafe-sdk", extras = ["http2"], specifier = ">=0.7.5" },
     { name = "ujson", specifier = ">=6.0.0" },
+    { name = "uvicorn", specifier = ">=0.54.0" },
 ]
 
 [[package]]

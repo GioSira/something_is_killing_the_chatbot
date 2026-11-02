@@ -22,6 +22,7 @@ def make_narrator(agent_name: str) -> list:
             trace_log.info("[%s] testo: %s", agent_name, str(msg.content)[:300])
         for call in msg.tool_calls:
             trace_log.info("[%s] chiama %s(%s)", agent_name, call["name"], call["args"])
+        trace_log.info("[%s] uso token: %s", agent_name, msg.usage_metadata)
         return None
 
     @wrap_tool_call(name=f"{agent_name}_tool_timer")

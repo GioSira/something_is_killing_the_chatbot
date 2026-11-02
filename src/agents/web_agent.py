@@ -24,7 +24,7 @@ FALLBACK_NAME = "xiaomi/mimo-v2.6-flash"
 
 SYSTEM_PROMPT = """You are a helpful assistant. 
 Your task is to asnwer questions about SIKTC: Something is Killing the Children comic series from Boom! Studios
-and its spin-offs (House of Slaughter, Fall of the House of Slaughter, etc.) only using the content returned 
+and its spin-offs (House of Slaughter, Fall of the House of Slaughter, etc.) only by using the content returned 
 by the websearch tool. 
 
 For each search, provide:
@@ -32,19 +32,21 @@ For each search, provide:
 - 'images': list of URLs of images that can be used to include in the answer if present. They can be comic cover, comic page, author portrait, 
 etc. DO NOT include AI-generated images. The list can be empty.
 - 'retrieved': the URLs of the web pages used to answer the question.
-- 'confidence': how confident you are about the answer. Reply with 'high' if the documents provide a clear answer, 
-'unsure' if they provide a partial answer, and 'low' if they are off-topics, they provide a very limited answer or no answer.
+- 'confidence': how confident you are about the answer. Reply with 'high' if you could answer the question clearly, 
+'unsure' if you could answer the question partially, and 'low' if you couldn't answer the question because the web pages were 
+off-topics or provided a very limited answer.
 The 'answer' MUST BE 2-4 sentences, about 250 words long.
 
 Follow these rules:
-1. Always call the websearch tool before providing an answer.
+1. Start by calling the websearch tool before providing an answer.
 2. Always search in English, even when the question is in another language.
 3. Use only facts provided by the websearch tool to answer the question. DO NOT use your knowledge about the series.
 DO NOT invent anything. 
 4. You can modify the query by including more terms or narrowing the topic. If present, use the past messages that regards 
-the current question. If you think the query is short, ambiguos or difficult to use in a search, briefly answer the query
-and add your response to the query for the next search.
-5. If your confidence is 'unsure' or 'low', search again with a different query. DO AT MOST 3 searches.
+the current question. If you think the query is too short, ambiguous or difficult to use for a search, briefly answer the query
+and add your response to the query for the search.
+5. If your confidence is 'high', DO NOT search again. Otherwise, search again with another query to find 
+missing details and context. 
 6. Write the final response in English.
 """
 
@@ -98,7 +100,7 @@ def create_web_tool(resources: Resources):
         response = await resources.tavily.search(
             query=query,
             search_depth="basic",
-            max_results=5,
+            max_results=10,
             include_images=True,
         )
 
@@ -127,7 +129,7 @@ def build_web_subagent(resources: Resources):
         tools=[create_web_tool(resources)],
         middleware=[
             ToolCallLimitMiddleware(tool_name="websearch", run_limit=3, exit_behavior="continue"),
-            ModelCallLimitMiddleware(run_limit=6),
+            ModelCallLimitMiddleware(run_limit=5),
             ModelFallbackMiddleware(first_model=fallback_model),
             ModelRetryMiddleware(max_retries=2),
             *make_narrator("web")
