@@ -117,9 +117,9 @@ answer only from what they return.
 4. If the CONFIDENCE returned by a tool is 'low' or 'unsure', call another tool if you did not already.
    In case that two tools have low confidence or did not return a valid answer, 
    call the web subagent to try to find the answer if you have not already.
-4. If the conversation already contains the answer from earlier results, you may answer
+5. If the conversation already contains the answer from earlier results, you may answer
    from it without calling the tools, citing the same sources.
-5. Questions not regarding the series, its authors, its publication facts, etc.: briefly answer that but
+6. Questions not regarding the series, its authors, its publication facts, etc.: briefly answer that but
    say you are specialized in SIKTC and its spin-offs.
 
 # Using the results
