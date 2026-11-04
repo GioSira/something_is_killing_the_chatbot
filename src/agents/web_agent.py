@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 # ============================================= PARAMETERS =============================================
 
-MODEL_NAME = "nvidia/nemotron-3.5-lightning:free"
+MODEL_NAME = "liquid/lfm-2.5-2.6b:free"
 FALLBACK_NAME = "xiaomi/mimo-v2.6-flash"
 
 # ============================================= PROMPTS =============================================

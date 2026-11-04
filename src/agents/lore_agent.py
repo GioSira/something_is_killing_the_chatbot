@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 # ============================================= PARAMETERS =============================================
 
-MODEL_NAME = "nvidia/nemotron-3.5-lightning:free"
+MODEL_NAME = "liquid/lfm-2.5-2.6b:free"
 FALLBACK_NAME = "xiaomi/mimo-v2.6-flash"
 
 CANDIDATES = 50
@@ -31,7 +31,7 @@ RERANK_TOP = 10
 
 # ============================================= PROMPTS =============================================
 
-GRADE_INSTRUCTION = """Decide whether the chunk in input contains information that help anwer the query.
+GRADE_INSTRUCTION = """Decide whether the chunk in input contains information that help to anwer the query.
 Answer 'yes' if the passage is useful to answer the query, otherwise 'no'
 """
 
@@ -81,17 +81,17 @@ async def score_with_jev(resources: Resources, query: str, documents: List[Docum
         return_exceptions=True
     )
 
-    to_kept = []
+    to_keep = []
     for verdict, document in zip(verdicts, documents):
 
         if isinstance(verdict, Exception):
             logger.warning("LDM failed for chunk %r: %r", document.id, document.page_content)
-            to_kept.append(document) # save for safety, LLM will prune
+            to_keep.append(document) # save for safety, LLM will prune
 
         if verdict.choice.strip().lower() == "yes":
-            to_kept.append(document)
+            to_keep.append(document)
 
-    return to_kept
+    return to_keep
 
 
 async def rag_function(resources: Resources, 

@@ -41,7 +41,7 @@ logger = logging.getLogger(__name__)
 # ============================================= CONFIG =============================================
 
 STATIC_DIR = Path(os.getenv("STATIC_DIR", Path(__file__).resolve().parents[2] / "static"))           # la pagina: static/index.html
-AGENT_TIMEOUT = float(os.getenv("AGENT_TIMEOUT", "180"))  # secondi per una risposta completa
+AGENT_TIMEOUT = float(os.getenv("AGENT_TIMEOUT", "240"))  # secondi per una risposta completa
 CORS_ORIGINS = [o.strip() for o in os.getenv("CORS_ORIGINS", "http://localhost:5173").split(",") if o.strip()]
 
 # Tool del coordinator -> id dell'agente mostrato nella pagina

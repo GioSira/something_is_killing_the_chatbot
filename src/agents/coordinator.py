@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 # ============================================= MODELS =============================================
 
-MODEL_NAME = "nvidia/nemotron-3.5-lightning:free"
+MODEL_NAME = "inclusionai/ling-3.1-flash"
 FALLBACK_NAME = "xiaomi/mimo-v2.6-flash"
 
 # ============================================= UTILS =============================================
@@ -114,10 +114,13 @@ answer only from what they return.
    The subagents cannot see this conversation, so replace pronouns (e.g., "she", "that arc" and similar)
    with the full names they refer to.
 3. Call each tool AT MOST once per question if you need their information. Its result is FINAL.
+4. If the CONFIDENCE returned by a tool is 'low' or 'unsure', call another tool if you did not already.
+   In case that two tools have low confidence or did not return a valid answer, 
+   call the web subagent to try to find the answer if you have not already.
 4. If the conversation already contains the answer from earlier results, you may answer
    from it without calling the tools, citing the same sources.
 5. Questions not regarding the series, its authors, its publication facts, etc.: briefly answer that but
-say you are specialized in SIKTC and its spin-offs.
+   say you are specialized in SIKTC and its spin-offs.
 
 # Using the results
 - Each result shows CONFIDENCE, ANSWER and SOURCE URLS. Use only facts from ANSWER.
@@ -165,7 +168,7 @@ def build_coordinator_agent(resources: Resources):
         model_provider="openrouter",
         reasoning={
             "enabled": True,
-            "effort": "medium"
+            "effort": "low"
         },
         max_retries=0,
     )
@@ -175,7 +178,7 @@ def build_coordinator_agent(resources: Resources):
         model_provider="openrouter",
         reasoning={
             "enabled": True,
-            "effort": "medium"
+            "effort": "low"
         },
         max_retries=0,
     )

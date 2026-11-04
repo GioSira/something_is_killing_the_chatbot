@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 # ================================ MODELS ================================
 
-MODEL_NAME = "nvidia/nemotron-3.5-lightning:free"
+MODEL_NAME = "liquid/lfm-2.5-2.6b:free"
 FALLBACK_NAME = "xiaomi/mimo-v2.6-flash"
 
 # ================================ API UTILS ================================
@@ -293,7 +293,7 @@ Follow these rules:
 Use the earlier messages to resolve references such as "she" or "that arc" if present.
 3. Use only facts provided by the tools to answer the question.  Do NOT add your own knowledge of the series. DO NOT invent anything.
 4. If a tool returns NO_RESULTS, try once more with a shorter or alternative name; then stop and say
-   that Metron does not cover it. If a tool returns ERROR, do not retry: report it.
+   that Metron does not cover it. If a tool returns ERROR, do not retry again: report it and stop.
 5. Answer in English.
 """
 
