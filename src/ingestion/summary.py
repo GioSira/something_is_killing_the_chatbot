@@ -1,6 +1,5 @@
 from langchain_core.documents import Document
 from openrouter import OpenRouter
-from openrouter.utils.retries import BackoffStrategy, RetryConfig
 from openrouter.errors import (TooManyRequestsResponseError, BadGatewayResponseError,
                                ProviderOverloadedResponseError, ServiceUnavailableResponseError,
                                RequestTimeoutResponseError)
@@ -28,23 +27,10 @@ logger = logging.getLogger(__name__)
 MODEL_NAME = "scaledown/summarize"
 EMBED_TYPE = "liquid/lfm-2.5-embedding-350m:free"
 
-retry_config = RetryConfig(
-    "backoff",
-    BackoffStrategy(
-        initial_interval=500,
-        max_interval=10_000,
-        exponent=1.5,
-        max_elapsed_time=int(60 * 1000),
-    ),
-    retry_connection_errors=True
-)
-
 PARAMS = {
-    "retries": retry_config,
     "timeout_ms": 100000,
-    # output stabile e non creativo
     "temperature": 0.0,
-    "max_completion_tokens": 2_000,
+    "max_completion_tokens": 500,
     "reasoning": {
         "effort": "none"
     }
@@ -63,7 +49,7 @@ XCEPTIONS = (
 PROMPT_METADATA_KEYS = ("title", "doc_type", "section_path", "series", "issue_min", "issue_max")
 
 
-SYSTEM_PROMPT = f"""You are a helpful assistant. 
+SYSTEM_PROMPT = """You are a helpful assistant. 
 You write retrieval summaries for chunks of a wiki about the comic series
 Something Is Killing the Children (BOOM! Studios) and its spin-offs. Each summary
 is indexed next to its chunk to help a search system find the chunk from a user's question.
@@ -90,8 +76,7 @@ Rules:
 4. Do not invent details. If something is not stated, leave it out.
 """
 
-openrouter_client = OpenRouter(api_key=os.getenv("OPENROUTER_API_KEY"), retry_config=retry_config)
-
+openrouter_client = OpenRouter(api_key=os.getenv("OPENROUTER_API_KEY"))
 
 class EmptyResponseError(Exception):
     """Il modello ha risposto senza testo (es. token esauriti nel ragionamento)."""
@@ -140,14 +125,12 @@ def get_embeddings(texts: List[str]) -> List[List[float]]:
     response = openrouter_client.embeddings.generate(
         model=EMBED_TYPE,
         input=texts,
-        retries=PARAMS["retries"],
         timeout_ms=PARAMS["timeout_ms"]
     )
 
     logger.info("Generated embeddings for %r", texts)
 
     return [[float(x) for x in item.embedding] for item in response.data]
-
 
 def load_document(source_path: str) -> str:
     """Testo completo del documento: infobox (che sta nel frontmatter) + corpo."""
@@ -191,7 +174,8 @@ def process_documents(documents: List[Document], output_path: str | Path) -> int
                 logger.info("Processing chunk %r", chunk.metadata["chunk_id"])
                 summary = generate_summary(chunk.page_content, document, chunk.metadata)
                 time.sleep(0.3)
-                summary_embedding, text_embedding = get_embeddings([summary, chunk.page_content])
+                context = f"{chunk.metadata.get('title', '')} > {chunk.metadata.get('section_path', '')}\n\n"
+                summary_embedding, text_embedding = get_embeddings([summary, context + chunk.page_content])
                 time.sleep(0.3)
 
                 record = {

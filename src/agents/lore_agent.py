@@ -10,7 +10,7 @@ from core.resources import open_resources, Resources
 from agents.contracts import LoreAnswer
 from agents.verbalization import make_narrator
 
-from typing import List, Tuple, Optional
+from typing import List, Tuple
 
 import asyncio
 import logging
