@@ -155,8 +155,7 @@ Summaries and embeddings are computed once, at ingestion time. Processing the wh
 - [x] Pinecone index with hybrid search and weighted RRF
 - [x] Spoiler guard on metadata
 - [x] Candidate reranking and chunk relevance grading
-- [ ] Queryable publication table (issue release timeline)
-- [ ] `lore_agent`, `comics_agent` and `web_agent` subagents, coordinator built with `create_agent`
+- [x] `lore_agent`, `comics_agent` and `web_agent` subagents, coordinator built with `create_agent`
 - [ ] Evaluation dataset (recall@5, answer faithfulness) on LangSmith
 
 **Stage 2: LangGraph**
