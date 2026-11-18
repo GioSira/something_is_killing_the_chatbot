@@ -1,0 +1,40 @@
+name: Lint
+
+on:
+    push:
+        branches:
+            - main
+            - features/**
+    pull_request:
+        types:
+            - opened
+            - synchronize
+        branches:
+            - main
+            - features/**
+    workflow_dispatch:
+
+permissions:
+    contents: read
+    packages: read
+
+    # issues and pull-requests permissions to write results as pull
+    # request comments.
+    issues: write
+    pull-requests: write
+    statuses: write # report GH statuses check codes
+
+jobs:
+    lint:
+        runs-on: ubuntu-latest
+        steps:
+
+            - name: Checkout code
+              uses: actions/checkout@v7
+              with:
+                fetch-depth: 0 # Required to find the parent commit for diff-base
+
+            - name: Set up linter
+              uses: super-linter/super-linter@v9.0.0
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,5 +1,4 @@
 from openrouter import OpenRouter
-from openrouter.utils.retries import BackoffStrategy, RetryConfig
 from openrouter.errors import (TooManyRequestsResponseError, BadGatewayResponseError,
                                ProviderOverloadedResponseError, ServiceUnavailableResponseError,
                                RequestTimeoutResponseError)
@@ -34,18 +33,7 @@ class EmbedAndRerankModel:
 
         ):
 
-        self.retry_config = RetryConfig(
-            "backoff",
-            BackoffStrategy(
-                initial_interval=500,
-                max_interval=10_000,
-                exponent=1.5,
-                max_elapsed_time=int(60 * 1000),
-            ),
-            retry_connection_errors=True
-        )
-
-        self.client = OpenRouter(api_key=os.getenv("OPENROUTER_API_KEY"), retry_config=self.retry_config)
+        self.client = OpenRouter(api_key=os.getenv("OPENROUTER_API_KEY"))
         self.rerank_model = rerank_model
         self.embed_model = embed_model
 
@@ -74,7 +62,6 @@ class EmbedAndRerankModel:
             model=self.embed_model,
             input=texts,
             timeout_ms=120000,
-            retries=self.retry_config
         )
 
         return [[float(x) for x in item.embedding] for item in response.data]
@@ -96,7 +83,6 @@ class EmbedAndRerankModel:
             documents=document_text, 
             query=query, 
             top_n=top_n,
-            retries=self.retry_config,
             timeout_ms=120000
         )
 
