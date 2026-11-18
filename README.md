@@ -3,8 +3,6 @@
 
 > *"There are monsters in those scripts."*
 
-[![Super-Linter](https://github.com/<OWNER>/<REPOSITORY>/actions/workflows/<WORKFLOW_FILE_NAME>/badge.svg)](https://github.com/marketplace/actions/super-linter)
-
 A multi-agent RAG system about the world of **Something Is Killing the Children**, the horror comic by James Tynion IV and Werther Dell'Edera, and its spin-offs (House of Slaughter, Hello Darkness, the *Book of* one-shots).
 
 This is a learning project. It starts with **LangChain** and grows in stages with **LangGraph** and **Deep Agents**. Each stage replaces the internals of the orchestration but keeps the data, the contracts and the evaluation unchanged, so every version can be compared on the same numbers.

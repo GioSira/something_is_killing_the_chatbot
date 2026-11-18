@@ -9,6 +9,7 @@ wheels/
 
 # passwords, api keys, etc...
 .env
+!.env.example
 
 # Virtual environments
 .venv
