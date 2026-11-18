@@ -58,7 +58,7 @@ jobs:
                 scan-type: "fs"
                 format: table
                 scan-ref: .
-                severity: HIGH, CRITICAL
+                severity: HIGH,CRITICAL
                 ignore-unfixed: true
                 exit-code: 1
                 # On a subsequent call to the action we know trivy is already installed so can skip this

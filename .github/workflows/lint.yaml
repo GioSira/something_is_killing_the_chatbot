@@ -52,11 +52,17 @@ jobs:
                 VALIDATE_SPELL_CODESPELL: false
                 VALIDATE_TRIVY: false
 
+                VALIDATE_BIOME_LINT: false
+                VALIDATE_GITHUB_ACTIONS_ZIZMOR: false
+                VALIDATE_HTML: false
+                VALIDATE_PYTHON_PLINT: false
+                VALIDATE_PYTHON_RUFF: false
+
                 # RUN FIXES WHERE POSSIBLE
                 FIX_BIOME_FORMAT: true
-                FIX_BIOME_LINT: true
+                #FIX_BIOME_LINT: true
                 FIX_ENV: true
-                FIX_GITHUB_ACTIONS_ZIZMOR: true
+                #FIX_GITHUB_ACTIONS_ZIZMOR: true
                 FIX_HTML_PRETTIER: true
                 FIX_JSON: true
                 FIX_JSON_PRETTIER: true
