@@ -1,0 +1,66 @@
+name: Trivy Check
+
+on:
+    schedule:
+        - cron: "0 0 1 * *" # run on the first day of every month at midnight
+    push:
+        branches:
+            - main
+    
+    pull_request:
+        branches:
+            - main
+            - features/**
+
+permissions:
+    contents: read
+    packages: read
+    actions: read
+
+    checks: write
+    statuses: write
+    issues: write
+
+jobs:
+    scans-containers-and-packages:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v7
+              with:
+                fetch-depth: 0
+
+            - name: setup trivy
+              uses: aquasecurity/setup-trivy@e07451d2e059ed86c2870430ea286b3a9e0bf241
+              with:
+                version: v0.68.2
+                cache: true
+        
+            - name: Run trivy scans
+              uses: aquasecurity/trivy-action@v0.36.0
+              with:
+                scan-type: 'fs'
+                ignore-unfixed: true
+                format: 'json'
+                output: 'trivy-report.json'
+                scan-ref: .
+                exit-code: 0
+
+            - name: Upload Vulnerability Scan Results
+              uses: actions/upload-artifact@v4
+              with:
+                name: trivy-report
+                path: trivy-report.json
+                retention-days: 30
+
+            - name: Fail build on High/Criticial Vulnerabilities
+              uses: aquasecurity/trivy-action@v0.36.0
+              with:
+                scan-type: "fs"
+                format: table
+                scan-ref: .
+                severity: HIGH, CRITICAL
+                ignore-unfixed: true
+                exit-code: 1
+                # On a subsequent call to the action we know trivy is already installed so can skip this
+                skip-setup-trivy: true
